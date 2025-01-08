@@ -1,0 +1,57 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column; /* Makes the layout stack vertically */
+}
+
+/* Container for the left and right sections */
+.split-vertically {
+    display: flex;
+    flex: 1;
+    height: 100%;
+}
+
+/* Left section divided horizontally */
+.left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #111;
+}
+
+.top-left {
+    flex: 1;
+    background-color: plum;
+}
+
+.bottom-left {
+    flex: 1;
+    background-color: peru;
+}
+
+/* Right section */
+.right {
+    flex: 1;
+    background-color: lemonchiffon;
+}
+
+.title {
+    padding-top: 20px;
+    padding-left: 40px;
+}
+
+.desc {
+    padding-top: 20px;
+    padding-left: 40px;
+    font-size: large;
+    color: black;
+}
+
+.link{
+    padding-top: 20px;
+    padding-left: 40px;   
+    font-size: small;
+    color: cyan;
+}
