@@ -10,6 +10,7 @@
     <div class="split-vertically">
         <div class="left">
             <div class="top-left">
+                <!-- Izquierda Arriba -->
                 <h1 class="title">SIGPAC - Above The Clouds</h1>
                 <p class="desc">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat quaerat suscipit qui ducimus 
@@ -18,15 +19,63 @@
                     elit. Expedita corrupti, vel veritatis autem nisi dicta tenetur rerum, et soluta aspernatur nam. 
                     Aut veritatis enim eius asperiores dicta neque pariatur repudiandae?
                 </p>
+
                 <a class="link" href="https://www.juntadeandalucia.es/organismos/agriculturapescaaguaydesarrollorural/servicios/sigpac/visor/paginas/sigpac-descarga-informacion-geografica-shapes-provincias.html"> Descargue aquí los datos vectoriales del Sistema de Información Geográfica de Identificación de Parcelas y Catastro (SIGPAC).</a>
             </div>
+            
             <div class="bottom-left">
-                Izquierda Abajo
+                <!-- Izquierda Abajo -->
+
+                <div class="container-group">
+
+                    <div class="container">
+                        <input type="file" id="file" accept="image/*" hidden>
+                        <div class="img-area" data-img="">
+                            <i class='bx bxs-cloud-upload icon'></i>
+                            <h3>Upload Data</h3>
+                            <p>Raster size must be less than <span>2MB</span></p>
+                        </div>
+                        <button class="select-image">Select Data</button>
+                    </div>
+
+                    <div class="container">
+                        <input type="file" id="file" accept="image/*" hidden>
+                        <div class="img-area" data-img="">
+                            <i class='bx bxs-cloud-upload icon'></i>
+                            <h3>Upload Data</h3>
+                            <p>Raster size must be less than <span>2MB</span></p>
+                        </div>
+                        <button class="select-image">Select Data</button>
+                    </div>
+
+                </div>
+
+                <div class="container-buttom">
+                    <div class="mainDiv">
+                        <button id="toggleButton">
+                            <span class="transition"></span>
+                            <span class="gradient"></span>
+                            <span class="label">START</span>
+                        </button>
+                        <div class="progressDiv">
+                            <div class="progress"></div>
+                        </div>
+                        <h2>0%</h2>
+                    </div>
+                </div>
+
             </div>
         </div>
+
+        <!-- Derecha -->
         <div class="right">
-            Derecha
+            <div class="container-group-right">
+                <div class="container-right">
+                    <p>HOLA</p>
+                </div>
+            </div>
         </div>
     </div>
+    <script src="static/js/script.js"></script>
 </body>
 </html>

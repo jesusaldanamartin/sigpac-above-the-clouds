@@ -22,12 +22,12 @@ body, html {
 }
 
 .top-left {
-    flex: 1;
+    flex: 0.35;
     background-color: plum;
 }
 
 .bottom-left {
-    flex: 1;
+    flex: 0.65;
     background-color: peru;
 }
 
@@ -37,13 +37,33 @@ body, html {
     background-color: lemonchiffon;
 }
 
+.container-group-right {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 95vh; /* Full viewport height */
+    margin: 0; /* Remove default margins */
+    padding-top: 25px;
+}
+
+.container-right {
+    width: 90%; /* 90% of the viewport width */
+    max-width: 95%; /* Optional: limit max width to 95% */
+    height: 100%; /* Full height of the parent container */
+    background: #bd1616;
+    padding: 30px;
+    border-radius: 20px;
+    box-sizing: border-box; /* Ensure padding doesn't affect dimensions */
+}
+
 .title {
     padding-top: 20px;
     padding-left: 40px;
 }
 
 .desc {
-    padding-top: 20px;
+    padding-top: 50px;
+    padding-bottom: 40px;
     padding-left: 40px;
     font-size: large;
     color: black;
@@ -54,4 +74,251 @@ body, html {
     padding-left: 40px;   
     font-size: small;
     color: cyan;
+}
+
+/* BUTTOM */
+
+button {
+    font-size: 17px;
+    padding: 1em 2em;
+    font-weight: 500;
+    background: #1f2937;
+    color: white;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.6em;
+    cursor: pointer;
+    width: 170px;
+  }
+  
+  .gradient {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 0.6em;
+    margin-top: -0.25em;
+    background-image: linear-gradient(
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0),
+      rgba(0, 0, 0, 0.3)
+    );
+  }
+  
+  .label {
+    position: relative;
+    top: -1px;
+  }
+  
+  .transition {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    transition-duration: 500ms;
+    background-color: rgba(16, 185, 129, 0.6);
+    border-radius: 9999px;
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  button:hover .transition {
+    width: 14em;
+    height: 14em;
+  }
+  
+  button:active {
+    transform: scale(0.97);
+  }
+
+  .container-buttom {
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Align the content vertically */
+    gap: 0.5rem; /* Add space between items if needed */
+    flex-wrap: wrap; /* Ensure wrapping if necessary */
+    padding: 30px;
+  }
+
+/* PROGRESS BAR */
+
+button:focus{
+    outline: none;
+  }
+  
+.mainDiv {
+    display: flex; /* Align items in a row */
+    align-items: center; /* Vertically center items within the row */
+    gap: 1rem; /* Space between the button, progress bar, and percentage */
+    width: 100%; /* Take up available space */
+    justify-content: center; /* Center the content horizontally */
+}
+  
+.mainDiv > button {
+    background: #2c3e50;
+    padding: 14px 25px;
+    border: none;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 0.6em;
+}
+  
+.mainDiv > button:hover {
+    background: #34495e;
+}
+  
+.mainDiv > .progressDiv {
+    width: 65%; /* Adjust width as necessary */
+    height: 30px;
+    background: #34495ecc;
+    border-radius: 10px;
+    overflow: hidden; /* Hide overflow of the progress bar */
+}
+  
+.mainDiv > .progressDiv > .progress {
+    width: 0%;
+    height: 100%; /* Match the height of the parent div */
+    background: #2c3e50;
+    border-radius: 10px;
+    transition: width 0.2s ease-in-out;
+}
+
+.mainDiv > h2 {
+    font-family: sans-serif;
+    color: #2c3e50;
+    margin: 0; /* Remove default margins */
+    font-size: 16px; /* Match the size with other elements */
+    min-width: 50px; /* Prevent shrinking of percentage text */
+    text-align: center;
+}
+
+/* UPLOADER */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+}
+
+:root {
+	--blue: #0071FF;
+	--light-blue: #B6DBF6;
+	--dark-blue: #005DD1;
+	--grey: #f2f2f2;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background: var(--light-blue);
+}
+
+.container-group {
+    margin-bottom: 3rem; /* Add spacing below the group */
+    display: flex; /* Makes the containers align next to each other */
+    flex-wrap: wrap; /* Ensures wrapping to the next line if there's not enough space */
+    gap: 2rem; /* Adds space between containers */
+    justify-content: center; /* Aligns items to the left */
+}
+
+.container {
+	max-width: 400px;
+	width: 100%;
+	background: #fff;
+	padding: 30px;
+	border-radius: 30px;
+}
+
+.img-area {
+	position: relative;
+	width: 100%;
+	height: 240px;
+	background: var(--grey);
+	margin-bottom: 30px;
+	border-radius: 15px;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.img-area .icon {
+	font-size: 100px;
+}
+
+.img-area h3 {
+	font-size: 20px;
+	font-weight: 500;
+	margin-bottom: 6px;
+}
+
+.img-area p {
+	color: #999;
+}
+
+.img-area p span {
+	font-weight: 600;
+}
+
+.img-area img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	z-index: 100;
+}
+
+.img-area::before {
+	content: attr(data-img);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .5);
+	color: #fff;
+	font-weight: 500;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	pointer-events: none;
+	opacity: 0;
+	transition: all .3s ease;
+	z-index: 200;
+}
+
+.img-area.active:hover::before {
+	opacity: 1;
+}
+
+.select-image {
+	display: block;
+	width: 100%;
+	padding: 16px 0;
+	border-radius: 15px;
+	background: var(--blue);
+	color: #fff;
+	font-weight: 500;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
+	transition: all .3s ease;
+}
+
+.select-image:hover {
+	background: var(--dark-blue);
 }
