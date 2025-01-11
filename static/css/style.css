@@ -54,6 +54,14 @@ body, html {
     padding: 30px;
     border-radius: 20px;
     box-sizing: border-box; /* Ensure padding doesn't affect dimensions */
+    box-shadow: rgba(0, 0, 0, 0.55) 0px 5px 15px;
+}
+
+.container-right img {
+    width: 100%; /* Make the image fill the container width */
+    height: 100%; /* Make the image fill the container height */
+    object-fit: cover; /* Ensures the image covers the container without distortion */
+    display: block; /* Removes any extra spacing */
 }
 
 .title {
@@ -321,4 +329,19 @@ body {
 
 .select-image:hover {
 	background: var(--dark-blue);
+}
+
+.uploaded {
+    text-align: center;
+    font-size: 16px;
+    color: green;
+}
+.checkmark {
+    font-size: 24px;
+    color: green;
+}
+.file-name {
+    font-size: 14px;
+    color: gray;
+    margin-top: 8px;
 }

@@ -25,30 +25,34 @@
             
             <div class="bottom-left">
                 <!-- Izquierda Abajo -->
-
                 <div class="container-group">
-
-                    <div class="container">
-                        <input type="file" id="file" accept="image/*" hidden>
-                        <div class="img-area" data-img="">
-                            <i class='bx bxs-cloud-upload icon'></i>
-                            <h3>Upload Data</h3>
-                            <p>Raster size must be less than <span>2MB</span></p>
-                        </div>
-                        <button class="select-image">Select Data</button>
+                    <!-- Upload Box 1 -->
+                    <div class="container" id="upload-box-1">
+                        <form id="form1" method="POST" action="/" enctype="multipart/form-data">
+                            <input type="file" name="file" id="file1" accept="image/*" hidden>
+                            <div class="img-area" id="img-area-1">
+                                <i class='bx bxs-cloud-upload icon'></i>
+                                <h3>Upload Raster/Shp</h3>
+                                <p>Raster must be a <span>.tif</span> file extension</p>
+                            </div>
+                            <button type="button" class="select-image" onclick="document.getElementById('file1').click()">Select Data</button>
+                        </form>
                     </div>
 
-                    <div class="container">
-                        <input type="file" id="file" accept="image/*" hidden>
-                        <div class="img-area" data-img="">
-                            <i class='bx bxs-cloud-upload icon'></i>
-                            <h3>Upload Data</h3>
-                            <p>Raster size must be less than <span>2MB</span></p>
-                        </div>
-                        <button class="select-image">Select Data</button>
+                    <!-- Upload Box 2 -->
+                    <div class="container" id="upload-box-2">
+                        <form id="form2" method="POST" action="/" enctype="multipart/form-data">
+                            <input type="file" name="file" id="file2" accept="image/*" hidden>
+                            <div class="img-area" id="img-area-2">
+                                <i class='bx bxs-cloud-upload icon'></i>
+                                <h3>Upload Raster/Shp</h3>
+                                <p>Shapefile must be a <span>.shp</span> file extension</p>
+                            </div>
+                            <button type="button" class="select-image" onclick="document.getElementById('file2').click()">Select Data</button>
+                        </form>
                     </div>
-
                 </div>
+
 
                 <div class="container-buttom">
                     <div class="mainDiv">
@@ -71,7 +75,7 @@
         <div class="right">
             <div class="container-group-right">
                 <div class="container-right">
-                    <p>HOLA</p>
+                    <img src="/static/assets/classification_30SUF.png" alt="IMAGE NOT FOUND"/>
                 </div>
             </div>
         </div>
