@@ -108,3 +108,56 @@ document.getElementById('file1').addEventListener('change', function () {
 document.getElementById('file2').addEventListener('change', function () {
     uploadFile(this, "img-area-2");
 });
+
+
+// EXECUTION START BUTTOM
+
+// document.getElementById('toggleButton').addEventListener('click', function() {
+//     fetch('/start', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         if (data.error) {
+//             alert(data.error);
+//         } else {
+//             alert(data.message || 'Process started successfully');
+//             console.log('Processing Result:', data.result);
+//         }
+//     })
+//     .catch(err => {
+//         alert('An error occurred: ' + err.message);
+//     });
+// });
+
+
+// RENDER MAP
+document.addEventListener("DOMContentLoaded", () => {
+    const startButton = document.getElementById("toggleButton");
+    const staticContainer = document.getElementById("static-container");
+    const mapContainer = document.getElementById("map-container");
+
+    startButton.addEventListener("click", () => {
+        fetch('/execution', { method: 'POST' })
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.json();
+            })
+            .then(data => {
+                if (data.png_url) {
+                    // Hide static image and show map
+                    staticContainer.style.display = "none";
+                    mapContainer.style.display = "block";
+
+                    // Initialize Leaflet map
+                    const map = L.map('map').setView([0, 0], 2); // Adjust view as needed
+                    L.imageOverlay(data.png_url, [[-90, -180], [90, 180]]).addTo(map);
+                    map.fitBounds([[-90, -180], [90, 180]]);
+                } else {
+                    console.error("Failed to load processed image:", data.error);
+                }
+            })
+            .catch(error => console.error("Error during execution:", error));
+    });
+});

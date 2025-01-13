@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGPAC - Above The Clouds</title>
     <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 <body>
     <div class="split-vertically">
@@ -72,14 +73,28 @@
         </div>
 
         <!-- Derecha -->
-        <div class="right">
+        <!-- <div class="right">
             <div class="container-group-right">
                 <div class="container-right">
                     <img src="/static/assets/classification_30SUF.png" alt="IMAGE NOT FOUND"/>
                 </div>
             </div>
+        </div> -->
+        <div class="right">
+            <div class="container-group-right">
+                <div class="container-right" id="static-container">
+                    <!-- Static Image -->
+                    <img id="static-image" src="/static/assets/classification_30SUF.png" alt="IMAGE NOT FOUND" style="width: 100%; height: 100%;" />
+                </div>
+                <div class="container-right" id="map-container" style="display: none; height: 100%;">
+                    <!-- Leaflet Map -->
+                    <div id="map" style="height: 100%;"></div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="static/js/script.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
 </body>
 </html>
