@@ -11,42 +11,58 @@ from satelite_images_sigpac.src.validation import read_needed_files, raster_comp
 import rasterio
 import fiona
 import logging
+import pandas as pd
 from PIL import Image
 from rasterio.enums import ColorInterp
 
 logger = logging.getLogger(__name__)
 
-COLORMAP = {
-    0: (0, 0, 0, 0),       # Transparent
-    1: (255, 0, 0, 255),   # Red
-    2: (0, 255, 0, 255),   # Green
-    3: (0, 0, 255, 255),   # Blue
-    4: (255, 255, 0, 255), # Yellow
-    5: (255, 165, 0, 255), # Orange
-    6: (128, 0, 128, 255), # Purple
-    7: (0, 255, 255, 255), # Cyan
-    8: (255, 192, 203, 255), # Pink
-    9: (128, 128, 128, 255), # Gray
-    10: (0, 128, 128, 255),  # Teal
-    11: (210, 105, 30, 255), # Chocolate
-    12: (75, 0, 130, 255),   # Indigo
-    13: (173, 255, 47, 255), # Green Yellow
-    14: (240, 230, 140, 255), # Khaki
-    15: (123, 104, 238, 255), # Medium Slate Blue
+COLORMAP_SIGPAC = {    
+    0: (0, 0, 0, 0),          # Transparent
+    1: (0, 50, 200 ),         # Red
+    2: (250, 0, 0 ),          # Green
+    3: (240, 150, 255 ),      # Blue
+    4: (240, 150, 255 ),      # Yellow
+    5: (240, 150, 255 ),      # Orange
+    6: (240, 150, 255 ),      # Purple
+    7: (250, 0, 0 ),          # Cyan
+    8: (255, 187, 34 ),       # Pink
+    9: (240, 150, 255 ),      # Gray
+    10: (240, 150, 255 ),     # Teal
+    11: (100, 140, 0 ),       # Chocolate
+    12: (240, 150, 255 ),     # Indigo
+    13: (240, 150, 255 ),     # Green Yellow
+    14: (240, 150, 255 ),     # Khaki
+    15: (250, 0, 0 ),         # Medium Slate Blue
     16: (255, 69, 0, 255),    # Orange Red
-    17: (46, 139, 87, 255),   # Sea Green
-    18: (32, 178, 170, 255),  # Light Sea Green
-    19: (255, 99, 71, 255),   # Tomato
-    20: (220, 20, 60, 255),   # Crimson
-    21: (255, 222, 173, 255), # Navajo White
-    22: (124, 252, 0, 255),   # Lawn Green
-    23: (255, 250, 205, 255), # Lemon Chiffon
-    24: (50, 205, 50, 255),   # Lime Green
-    25: (138, 43, 226, 255),  # Blue Violet
-    26: (255, 215, 0, 255),   # Gold
-    27: (72, 61, 139, 255),   # Dark Slate Blue
-    28: (199, 21, 133, 255),  # Medium Violet Red
-    29: (218, 112, 214, 255)  # Orchid
+    17: (240, 150, 255 ),     # Sea Green
+    18: (240, 150, 255 ),     # Light Sea Green
+    19: (240, 150, 255 ),     # Tomato
+    20: (255, 187, 34 ),      # Crimson
+    21: (255, 187, 34 ),      # Navajo White
+    22: (255, 255, 76 ),      # Lawn Green
+    23: (240, 150, 255 ),     # Lemon Chiffon
+    24: (240, 150, 255 ),     # Lime Green
+    25: (240, 150, 255 ),     # Blue Violet
+    26: (240, 150, 255 ),     # Gold
+    27: (240, 150, 255 ),     # Dark Slate Blue
+    28: (250, 0, 0 ),         # Medium Violet Red
+    29: (250, 0, 0 )          # Orchid
+}
+
+COLORMAP_RED_GREEN = {
+    0: (0, 0, 0, 0),      # Transparent
+    1: (185, 56, 0 ),     # Red
+    2: (3, 165, 0 ),      # Green
+}
+
+COLORMAP_CONF_MATRIX = {
+    0: (0, 0, 0, 0),      # Transparent
+    1: (2, 138, 0 ),      # Green
+    2: (117, 117, 117),   # Gray
+    3: (145, 44, 0 ),     # Red
+    4: (42, 61, 188 )     # Blue
+
 }
 
 UPLOAD_FOLDER = '/home/jesusaldanamartin/TFM/tests/'
@@ -88,10 +104,10 @@ def upload_file():
    
 @app.route('/execution', methods=['POST'])
 def execute_process():
-    raster_file = None
-    shapefile = None
-
     try:
+        raster_file = None
+        shapefile = None
+
         for filename in os.listdir(app.config['UPLOAD_FOLDER']):
             if filename.endswith('.tif') or filename.endswith('.tiff'):
                 raster_file = filename
@@ -112,36 +128,63 @@ def execute_process():
             output_name="above_the_clouds_sigpac",
             output_folder=output_folder
         )
-        
-        # Convert the processed file to PNG for rendering
-        output_tif = os.path.join(output_folder, "sigpac_file.tif")
-        styled_tif = os.path.join("/home/jesusaldanamartin/TFM/tests/output", "styled_sigpac_file.tif")
-        apply_colormap(output_tif, styled_tif, COLORMAP)
 
-        # Convert the styled TIFF to PNG
-        output_png = os.path.join("/home/jesusaldanamartin/TFM/tests/output", "styled_sigpac_file.png")
-        convert_tiff_to_png(styled_tif, output_png)
-        
-        output_png = os.path.join(output_folder, styled_tif)
-        with rasterio.open(output_tif) as src:
-            data = src.read(1)
-            img = Image.fromarray(data)
-            img.save(output_png)
+        metrics_path = os.path.join(output_folder, "metrics.csv")
+        print(metrics_path)
+        filtered_metrics = process_metrics_csv(metrics_path)
+        print(filtered_metrics)
+        # Apply custom styles and convert TIFs to PNGs
+        styled_files = {}
+        for tif_name in ["sigpac_file.tif", "red_green.tif", "conf_matrix.tif"]:
+            input_tif = os.path.join(output_folder, tif_name)
+            styled_tif = os.path.join(output_folder, f"styled_{tif_name}")
+            output_png = os.path.join(output_folder, f"styled_{tif_name.replace('.tif', '.png')}")
+            
+            if "sigpac_file" in tif_name:
+                apply_colormap(input_tif, styled_tif, COLORMAP_SIGPAC)
+            elif "red_green" in tif_name:
+                apply_colormap(input_tif, styled_tif, COLORMAP_RED_GREEN)
+            elif "conf" in tif_name:
+                apply_colormap(input_tif, styled_tif, COLORMAP_CONF_MATRIX)
 
-        return jsonify({"png_url": f"/output/styled_sigpac_file.png"}), 200
+            convert_tiff_to_png(styled_tif, output_png)
+            styled_files[tif_name.replace('.tif', '')] = output_png
+
+        print(f"Styled PNG files: {styled_files}")
+
+        response_data = {
+            "default_map": f"/output/{os.path.basename(styled_files['sigpac_file'])}",
+            "true_false_map": f"/output/{os.path.basename(styled_files['red_green'])}",
+            "conf_matrix_map": f"/output/{os.path.basename(styled_files['conf_matrix'])}",
+            "metrics_table": filtered_metrics
+        }
+
+        print("Response Data:", response_data)
+
+        return jsonify(response_data), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        app.logger.error("Error during execution: %s", e)
+    return jsonify({"error": str(e)}), 500
+
 
 def satelite_images_sigpac(raster_path, shapefile_path, output_name, output_folder):
-
-    # print(shapefile_path)
-    # print(raster_path)
-    # print(output_folder + "masked_file.tif")
 
     mask_shp(shapefile_path, raster_path, output_folder + "masked_file.tif")
     save_output_file(shapefile_path, output_folder + "masked_file.tif", output_folder +"sigpac_file.tif")
 
-    print(f"Processing {raster_path} and {shapefile_path} and {output_name} and {output_folder}")
+    rows, cols, metadata, style, msk_band, sgc_band = read_needed_files(
+        "../satelite_images_sigpac/json/crop_style_sheet.json", output_folder + "masked_file.tif", output_folder +"sigpac_file.tif")
+
+    print("Binario")
+    raster_comparison(rows, cols, metadata, output_folder + "red_green.tif", style, msk_band, sgc_band)
+    print("CONF AMTRIX")
+    raster_comparison_confmatrix(
+        rows, cols, metadata, output_folder + "conf_matrix.tif", style, msk_band, sgc_band)
+
+    print("start csv")
+    create_dataframe_and_graphs(msk_band, sgc_band, output_folder + "metrics.csv")
+    print("finish csv")
+    # print(f"Processing {raster_path} and {shapefile_path} and {output_name} and {output_folder}")
 
     return {"raster": raster_path, "shapefile": shapefile_path}
 
@@ -177,6 +220,14 @@ def convert_tiff_to_png(tif_path, png_path):
         img = Image.fromarray(data.astype("uint8"), mode="P")
         img.putpalette(palette)
         img.save(png_path)
+
+def process_metrics_csv(csv_path):
+
+    df = pd.read_csv(csv_path)
+
+    df_filtered = df[(df.iloc[:, 1:] != 0).any(axis=1)]
+
+    return df_filtered.to_dict(orient='records')
 
 if __name__ == "__main__":
     app.run(debug=True)

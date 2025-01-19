@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGPAC - Above The Clouds</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+    <div class="split-vertically">
+        <div class="left">
+            <div class="top-left">
+                <!-- Izquierda Arriba -->
+                <h1 class="title">SIGPAC - Above The Clouds</h1>
+                <p class="desc">
+                    This Master’s thesis aims to develop a software application that will leverage state-of-the-art technologies in cloud computing,
+                    geospatial analysis, and machine learning by providing a cutting-edge application for validating land cover classification models.
+                    By focusing on cropland distribution and SIGPAC data, this project addresses an important need in agricultural monitoring. For
+                    these objectives, this dissertation will implement satellite imagery processing and ground truth data, combined with advanced cloud
+                    platforms like Google Cloud, Azure, or AWS.
+                </p>
+
+                <div class="links-container">
+                    <a class="link" href="https://www.juntadeandalucia.es/organismos/agriculturapescaaguaydesarrollorural/servicios/sigpac/visor/paginas/sigpac-descarga-informacion-geografica-shapes-provincias.html">
+                        Click here to download Geographic Information System of Agricultural Plots and cadastre (SIGPAC).
+                    </a>
+                    <a class="link" href="https://www.juntadeandalucia.es/organismos/agriculturapescaaguaydesarrollorural/servicios/sigpac/visor/paginas/sigpac-descarga-informacion-geografica-shapes-provincias.html">
+                        Click here to download a raster example to test the app.
+                    </a>
+                </div>
+            </div>
+            
+            <div class="bottom-left" id="bottom-left-container">
+                <div class="container-group">
+                    <div id="metrics-table-container" class="container">
+                        <table style="width: 100%; border-collapse: collapse; background: #f7f7f7; border-radius: 15px; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;">
+                            <thead style="background-color: #492C1D; color: #f7f7f7;">
+                                <tr>
+                                    <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Category</th>
+                                    <th style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Aciertos</th>
+                                    <th style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Fallos</th>
+                                    <th style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Porcentaje de acierto</th>
+                                    <th style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Num Pixeles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background-color: #f7f7f7;">
+                                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">Frutal de Cascara</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">1435</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">3127</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">31.456</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">4562</td>
+                                </tr>
+                                <tr style="background-color: #f7f7f7;">
+                                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">Frutal</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">561</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">2462</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">18.558</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">3023</td>
+                                </tr>
+                                <tr style="background-color: #f7f7f7;">
+                                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">Olivar</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">27797</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">18375</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">60.203</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">46172</td>
+                                </tr>
+                                <tr style="background-color: #f7f7f7;">
+                                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">Tierra Arable</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">31227</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">6739</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">82.25</td>
+                                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">37966</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Derecha -->
+        <div class="right">
+            <div class="container-group-right">
+                <div class="map-buttons">
+                    <button id="btn-metrics-toggle">Toggle Metrics</button>
+                    <button id="btn-classification">Classificator</button>
+                    <button id="btn-true-false">True/False</button>
+                    <button id="btn-conf-matrix">Conf Matrix</button>
+                </div>
+                <div class="container-right" id="static-container">
+                    <img id="static-image" src="/static/assets/classification_30SUF.png" alt="IMAGE NOT FOUND" />
+                </div>
+                <div class="container-right" id="map-container" style="display: none; height: 100%;">
+                    <div id="map" style="height: 100%;"></div>
+                </div>
+            </div>
+        </div>        
+    </div>
+    <script src="static/js/script.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+</body>
+</html>
