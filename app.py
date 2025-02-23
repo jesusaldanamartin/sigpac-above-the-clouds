@@ -14,8 +14,22 @@ import logging
 import pandas as pd
 from PIL import Image
 from rasterio.enums import ColorInterp
+import boto3 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
+
+S3_BUCKET = "sigpac-above-the-cloud"
+S3_REGION = "us-east-1"
+
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_KEY"),
+    region_name=S3_REGION,
+)
 
 COLORMAP_SIGPAC = {    
     0: (0, 0, 0, 0),          # Transparent
@@ -166,6 +180,33 @@ def execute_process():
         app.logger.error("Error during execution: %s", e)
     return jsonify({"error": str(e)}), 500
 
+@app.route('/output-2/<filename>')
+def get_processed_file(filename):
+    processed_key = f"processed/{filename}"
+
+    try:
+        s3_client.head_object(Bucket=S3_BUCKET, Key=processed_key)
+        file_url = f"https://{S3_BUCKET}.s3.{S3_REGION}.amazonaws.com/{processed_key}"
+        return jsonify({"processed_file_url": file_url}), 200
+    except:
+        return jsonify({"error": "Processed file not found"}), 404
+
+@app.route('/upload-2', methods=['POST'])
+def upload_file_2():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        s3_client.upload_fileobj(file, S3_BUCKET, f"uploads/{filename}")
+
+        return jsonify({"message": "File uploaded to S3", "filename": filename}), 200
+    else:
+        return jsonify({"error": "File type not allowed"}), 400
 
 def satelite_images_sigpac(raster_path, shapefile_path, output_name, output_folder):
 
